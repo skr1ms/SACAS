@@ -1,0 +1,28 @@
+# Environment variables
+.env
+frontend/.env
+
+# Logs
+*.log
+logs/
+*.db
+*.sqlite
+.dockerignore
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+backend/main.go.old
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+node_modules/
+vendor/
+*.tmp
+*.temp
