@@ -90,14 +90,12 @@ go run cmd/server/main.go
 # Frontend (из папки frontend)
 npm start
 
-```bash
 # Запуск всего приложения
 docker compose up -d
 ```
 
 ### Остановка
 
-```bash
 ```bash
 docker compose down
 
