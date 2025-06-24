@@ -17,7 +17,6 @@ func NewSubmissionHandler(submissionSvc services.SubmissionService) *SubmissionH
 	return &SubmissionHandler{submissionSvc: submissionSvc}
 }
 
-// POST /api/submissions
 func (h *SubmissionHandler) CreateSubmission(c *fiber.Ctx) error {
 	var req models.SubmissionRequest
 	if err := c.BodyParser(&req); err != nil {

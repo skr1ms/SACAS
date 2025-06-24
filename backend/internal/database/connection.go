@@ -28,7 +28,6 @@ func NewConnection(cfg *config.Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
-	// Автомиграция
 	if err := db.AutoMigrate(&models.CodeSubmission{}); err != nil {
 		return nil, fmt.Errorf("failed to migrate database: %w", err)
 	}
