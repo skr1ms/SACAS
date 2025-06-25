@@ -12,6 +12,7 @@ type SubmissionRepository interface {
 	GetAll() ([]models.CodeSubmission, error)
 	Update(submission *models.CodeSubmission) error
 	Delete(id string) error
+	GetContentByFileType(fileType string) ([]string, error)
 }
 
 type submissionRepository struct {
@@ -47,4 +48,19 @@ func (r *submissionRepository) Update(submission *models.CodeSubmission) error {
 
 func (r *submissionRepository) Delete(id string) error {
 	return r.db.Delete(&models.CodeSubmission{}, "id = ?", id).Error
+}
+
+func (r *submissionRepository) GetContentByFileType(fileType string) ([]string, error) {
+	var submissions []models.CodeSubmission
+	err := r.db.Select("content").Where("file_type = ?", fileType).Find(&submissions).Error
+	if err != nil {
+		return nil, err
+	}
+
+	contents := make([]string, len(submissions))
+	for i, submission := range submissions {
+		contents[i] = submission.Content
+	}
+
+	return contents, nil
 }

@@ -71,10 +71,8 @@ docker-run: docker-build ## Запустить в Docker
 	@echo "Запуск в Docker..."
 	docker run -p 8080:8080 codegrader-backend
 
-# Полная проверка качества кода
 quality-check: fmt vet lint test coverage ## Полная проверка качества кода
 	@echo "Проверка качества кода завершена!"
 
-# Подготовка к продакшену
 prepare-prod: clean deps quality-check build ## Подготовка к развертыванию
 	@echo "Подготовка к продакшену завершена!"

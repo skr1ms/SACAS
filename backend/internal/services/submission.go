@@ -44,11 +44,32 @@ func (s *submissionService) CreateSubmission(req *models.SubmissionRequest) (*mo
 		CreatedAt: time.Now(),
 	}
 
+	existingSubmissions, err := s.repo.GetContentByFileType(req.FileType)
+	if err != nil {
+		log.Printf("Failed to get existing submissions for plagiarism check: %v", err)
+		existingSubmissions = []string{} 
+	}
+
+	isPlagiarism := false
+	plagiarismExplanation := ""
+	if len(existingSubmissions) > 0 {
+		isPlagiarism, plagiarismExplanation, err = s.openaiSvc.CheckForPlagiarism(req.Content, req.FileType, existingSubmissions)
+		if err != nil {
+			log.Printf("Plagiarism check failed: %v", err)
+		}
+	}
+
 	grade, feedback, err := s.openaiSvc.AnalyzeCode(req.Content, req.FileType)
 	if err != nil {
 		log.Printf("OpenAI analysis failed: %v", err)
 		grade = 3
 		feedback = "Автоматический анализ недоступен. Код загружен для ручной проверки."
+	}
+
+	if isPlagiarism {
+		grade = 3
+		feedback = fmt.Sprintf("⚠️ ОБНАРУЖЕН ПЛАГИАТ: Данное решение очень похоже на уже существующее.\n\n%s\n\nОригинальная оценка: %s", plagiarismExplanation, feedback)
+		log.Printf("Plagiarism detected for submission %s", submission.ID)
 	}
 
 	submission.Grade = grade
