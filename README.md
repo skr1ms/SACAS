@@ -37,6 +37,9 @@
    - Backend API: http://localhost:8080
    - Health check: http://localhost:8080/health
 
+5. **Для тестирования API:**
+   - make test
+
 ## 🏗️ Архитектура
 
 ### Backend (Go)

@@ -1,0 +1,9 @@
+# Конфигурация для golangci-lint v1
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - gofmt
