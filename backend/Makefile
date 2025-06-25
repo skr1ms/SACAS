@@ -46,7 +46,24 @@ benchmark: ## Запустить бенчмарки
 
 lint: ## Проверка кода линтером
 	@echo "Проверка кода линтером..."
-	golangci-lint run --timeout 5m
+	@if command -v golangci-lint >/dev/null 2>&1; then \
+		golangci-lint run --timeout 5m; \
+	else \
+		echo "golangci-lint не найден. Используем стандартные инструменты Go..."; \
+		go fmt ./...; \
+		go vet ./...; \
+		echo "Для полной проверки установите golangci-lint: make install-golangci-lint"; \
+	fi
+
+install-golangci-lint: ## Установить golangci-lint
+	@echo "Установка golangci-lint..."
+	@if [ "$$(uname)" = "Linux" ] || [ "$$(uname)" = "Darwin" ]; then \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.55.2; \
+	elif [ "$$(uname -o 2>/dev/null)" = "Msys" ] || [ "$$(uname -s)" = "MINGW64_NT-10.0" ]; then \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.55.2; \
+	else \
+		echo "Скачайте golangci-lint с https://github.com/golangci/golangci-lint/releases"; \
+	fi
 
 fmt: ## Форматирование кода
 	@echo "Форматирование кода..."

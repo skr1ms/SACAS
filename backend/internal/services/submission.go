@@ -47,7 +47,7 @@ func (s *submissionService) CreateSubmission(req *models.SubmissionRequest) (*mo
 	existingSubmissions, err := s.repo.GetContentByFileType(req.FileType)
 	if err != nil {
 		log.Printf("Failed to get existing submissions for plagiarism check: %v", err)
-		existingSubmissions = []string{} 
+		existingSubmissions = []string{}
 	}
 
 	isPlagiarism := false
